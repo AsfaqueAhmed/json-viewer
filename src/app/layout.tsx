@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Fira_Code, JetBrains_Mono } from "next/font/google";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import "./globals.css";
 
 const inter = Inter({
@@ -252,6 +253,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.variable} ${firaCode.variable} ${jetbrainsMono.variable}`}>
+        <GoogleAnalytics />
         {children}
       </body>
     </html>

@@ -34,6 +34,7 @@ import { GraphViewer } from "@/components/Views/GraphViewer";
 import { RepairStudio } from "@/components/Views/RepairStudio";
 import { SeoContentSection } from "@/components/SeoContentSection";
 import { TOOLS_CONFIG } from "@/lib/seo-schemas";
+import { trackEvent } from "@/lib/analytics";
 
 const STORAGE_KEY_TABS = "json_studio_tabs_v1";
 const STORAGE_KEY_THEME = "json_studio_theme_v1";
@@ -199,30 +200,35 @@ export function JsonStudioApp({
       const repaired = repairJsonString(activeTab.content);
       if (repaired.success && repaired.repaired) {
         handleUpdateActiveContent(repaired.repaired);
+        trackEvent("json_format_auto_repaired");
         return;
       }
       return;
     }
     const formatted = formatJson(parseResult.data, indentation);
     handleUpdateActiveContent(formatted);
+    trackEvent("json_format", { indentation: String(indentation) });
   }, [parseResult, activeTab.content, indentation, handleUpdateActiveContent]);
 
   const handleMinify = useCallback(() => {
     if (!parseResult.valid || parseResult.data === null) return;
     const minified = minifyJson(parseResult.data);
     handleUpdateActiveContent(minified);
+    trackEvent("json_minify");
   }, [parseResult, handleUpdateActiveContent]);
 
   const handleSortKeys = useCallback(() => {
     if (!parseResult.valid || parseResult.data === null) return;
     const sorted = sortJsonKeys(parseResult.data);
     handleUpdateActiveContent(formatJson(sorted, indentation));
+    trackEvent("json_sort_keys");
   }, [parseResult, indentation, handleUpdateActiveContent]);
 
   const handleAutoRepair = useCallback(() => {
     const repaired = repairJsonString(activeTab.content);
     if (repaired.success && repaired.repaired) {
       handleUpdateActiveContent(repaired.repaired);
+      trackEvent("json_auto_repair", { success: true });
     }
   }, [activeTab.content, handleUpdateActiveContent]);
 
@@ -230,6 +236,7 @@ export function JsonStudioApp({
     if (!parseResult.valid || parseResult.data === null) return;
     const cleaned = removeNullValues(parseResult.data);
     handleUpdateActiveContent(formatJson(cleaned, indentation));
+    trackEvent("json_remove_nulls");
   }, [parseResult, indentation, handleUpdateActiveContent]);
 
   const handleTransformKeysCase = useCallback(
@@ -237,6 +244,7 @@ export function JsonStudioApp({
       if (!parseResult.valid || parseResult.data === null) return;
       const transformed = transformKeysCase(parseResult.data, targetCase);
       handleUpdateActiveContent(formatJson(transformed, indentation));
+      trackEvent("json_transform_case", { case: targetCase });
     },
     [parseResult, indentation, handleUpdateActiveContent]
   );
