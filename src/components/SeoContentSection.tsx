@@ -323,11 +323,11 @@ export function SeoContentSection({
                         paddingBottom: "2px",
                       }}
                     >
-                      Zero Telemetry
+                      No JSON Upload
                     </span>
                   </div>
                   <p className="text-xs mt-1 max-w-2xl leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-                    Your JSON never leaves your browser sandbox. Perfectly safe for proprietary API secrets, tokens, production databases, and customer records.
+                    Your JSON never leaves your browser sandbox — all parsing, diffing, and conversion happens locally. We do use privacy-respecting, anonymous usage analytics (no ad tracking, no personal data) to improve the tools.
                   </p>
                 </div>
               </div>

@@ -38,9 +38,14 @@ export function GoogleAnalytics() {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
+            // Disable ad-signal / cross-device tracking features — this app only
+            // needs first-party usage analytics, not remarketing/ads data.
+            gtag('set', 'allow_google_signals', false);
+            gtag('set', 'allow_ad_personalization_signals', false);
             gtag('config', '${GA_MEASUREMENT_ID}', {
-              page_path: window.location.pathname,
-              send_page_view: true
+              // AnalyticsTracker fires the initial pageview on mount — sending it
+              // here too would double-count every page load.
+              send_page_view: false
             });
           `,
         }}
