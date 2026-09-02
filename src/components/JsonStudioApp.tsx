@@ -74,6 +74,7 @@ export function JsonStudioApp({
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isUrlImportOpen, setIsUrlImportOpen] = useState(false);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
+  const [mobileEditorTab, setMobileEditorTab] = useState<"code" | "tree">("code");
 
   // Hidden File Input
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -538,9 +539,7 @@ export function JsonStudioApp({
               onCloseTab={handleCloseTab}
               onAddTab={handleAddTab}
               onRenameTab={handleRenameTab}
-            />
-
-            {/* Breadcrumbs & Search Toolbar */}
+            />            {/* Breadcrumbs & Search Toolbar */}
             {activeView === "tree" && (
               <Breadcrumbs
                 currentPath={currentPath}
@@ -550,12 +549,44 @@ export function JsonStudioApp({
               />
             )}
 
+            {/* Mobile Segmented Toggle when in Split View */}
+            {isSplitView && (
+              <div className="flex md:hidden items-center justify-center p-1.5 bg-[var(--bg-secondary)] border-b border-[var(--border-color)]">
+                <div className="flex items-center rounded-lg bg-[var(--bg-primary)] p-0.5 border border-[var(--border-color)] w-full max-w-xs">
+                  <button
+                    onClick={() => setMobileEditorTab("code")}
+                    className={`flex-1 py-1 text-xs font-semibold rounded-md transition-all flex items-center justify-center gap-1.5 ${
+                      mobileEditorTab === "code"
+                        ? "bg-[var(--accent-primary)] text-white shadow-xs"
+                        : "text-[var(--text-secondary)] hover:text-white"
+                    }`}
+                  >
+                    <span>📝 Code Editor</span>
+                  </button>
+                  <button
+                    onClick={() => setMobileEditorTab("tree")}
+                    className={`flex-1 py-1 text-xs font-semibold rounded-md transition-all flex items-center justify-center gap-1.5 ${
+                      mobileEditorTab === "tree"
+                        ? "bg-[var(--accent-primary)] text-white shadow-xs"
+                        : "text-[var(--text-secondary)] hover:text-white"
+                    }`}
+                  >
+                    <span>🌳 Active View</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* Active Workspaces / Split View Area */}
             <div className="flex-1 flex overflow-hidden">
               {isSplitView ? (
                 <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
                   {/* Left Split: Monaco Editor */}
-                  <div className="w-full md:w-1/2 h-1/2 md:h-full border-b md:border-b-0 md:border-r border-[var(--border-color)] overflow-hidden">
+                  <div
+                    className={`w-full md:w-1/2 h-full md:border-r border-[var(--border-color)] overflow-hidden ${
+                      mobileEditorTab === "code" ? "block" : "hidden md:block"
+                    }`}
+                  >
                     <EditorView
                       value={activeTab.content}
                       onChange={handleUpdateActiveContent}
@@ -572,7 +603,11 @@ export function JsonStudioApp({
                   </div>
 
                   {/* Right Split: Selected Mode View */}
-                  <div className="w-full md:w-1/2 h-1/2 md:h-full overflow-hidden">
+                  <div
+                    className={`w-full md:w-1/2 h-full overflow-hidden ${
+                      mobileEditorTab === "tree" ? "block" : "hidden md:block"
+                    }`}
+                  >
                     {renderPrimaryView()}
                   </div>
                 </div>
@@ -585,23 +620,25 @@ export function JsonStudioApp({
           </main>
         </div>
 
-        {/* Bottom Status Bar */}
-        <StatusBar
-          isValid={parseResult.valid}
-          errorMessage={parseResult.error?.message}
-          errorLine={parseResult.error?.line}
-          errorColumn={parseResult.error?.column}
-          stats={jsonStats}
-          indentation={indentation}
-          onChangeIndentation={(newIndent) => {
-            setIndentation(newIndent);
-            if (parseResult.valid && parseResult.data !== null) {
-              handleUpdateActiveContent(formatJson(parseResult.data, newIndent));
-            }
-          }}
-          onAutoRepair={handleAutoRepair}
-          onJumpToError={() => setActiveView("editor")}
-        />
+        {/* Bottom Status Bar (with mobile padding offset for bottom nav) */}
+        <div className="pb-14 md:pb-0 flex-shrink-0">
+          <StatusBar
+            isValid={parseResult.valid}
+            errorMessage={parseResult.error?.message}
+            errorLine={parseResult.error?.line}
+            errorColumn={parseResult.error?.column}
+            stats={jsonStats}
+            indentation={indentation}
+            onChangeIndentation={(newIndent) => {
+              setIndentation(newIndent);
+              if (parseResult.valid && parseResult.data !== null) {
+                handleUpdateActiveContent(formatJson(parseResult.data, newIndent));
+              }
+            }}
+            onAutoRepair={handleAutoRepair}
+            onJumpToError={() => setActiveView("editor")}
+          />
+        </div>
       </div>
 
       {/* Semantic SEO & Developer Guide Documentation Hub */}

@@ -87,6 +87,7 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
   const [diffFilter, setDiffFilterState] = useState<"all" | "added" | "removed" | "modified">(
     diffMemoryCache.diffFilter
   );
+  const [isInlineDiff, setIsInlineDiff] = useState(false);
   const setDiffFilter = (filter: "all" | "added" | "removed" | "modified") => {
     diffMemoryCache.diffFilter = filter;
     setDiffFilterState(filter);
@@ -262,6 +263,20 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
           >
             <Sparkles size={13} className="text-emerald-400" />
             <span>Format</span>
+          </button>
+
+          <div className="h-4 w-[1px] bg-[var(--border-color)] opacity-70 flex-shrink-0 self-center" />
+
+          <button
+            onClick={() => setIsInlineDiff(!isInlineDiff)}
+            title={isInlineDiff ? "Switch to Side-by-Side Diff" : "Switch to Inline Diff (Mobile Friendly)"}
+            className={`flex items-center gap-1.5 text-xs rounded-md transition-all font-medium flex-shrink-0 px-2.5 py-1 ${
+              isInlineDiff
+                ? "bg-[var(--accent-primary)]/15 text-[var(--accent-primary)] font-semibold border border-[var(--accent-primary)]/40 shadow-xs"
+                : "hover:bg-[var(--bg-hover)] text-[var(--text-primary)]"
+            }`}
+          >
+            <span>{isInlineDiff ? "Inline Mode" : "Split Mode"}</span>
           </button>
         </div>
 
@@ -461,7 +476,7 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
                 readOnly: false,
                 originalEditable: true,
                 automaticLayout: true,
-                renderSideBySide: true,
+                renderSideBySide: !isInlineDiff,
                 wordWrap: "on",
                 minimap: { enabled: false },
               }}

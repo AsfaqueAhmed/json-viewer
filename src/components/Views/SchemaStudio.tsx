@@ -39,6 +39,7 @@ export const SchemaStudio: React.FC<SchemaStudioProps> = ({
   });
 
   const [copiedSchema, setCopiedSchema] = useState(false);
+  const [mobileTab, setMobileTab] = useState<"data" | "schema">("data");
 
   // Validate JSON against Schema
   const validationResult: ValidationResult = useMemo(() => {
@@ -176,10 +177,40 @@ export const SchemaStudio: React.FC<SchemaStudioProps> = ({
         </div>
       </div>
 
+      {/* Mobile Segmented Toggle */}
+      <div className="flex md:hidden items-center justify-center p-1.5 bg-[var(--bg-secondary)] border-b border-[var(--border-color)]">
+        <div className="flex items-center rounded-lg bg-[var(--bg-primary)] p-0.5 border border-[var(--border-color)] w-full max-w-xs">
+          <button
+            onClick={() => setMobileTab("data")}
+            className={`flex-1 py-1 text-xs font-semibold rounded-md transition-all flex items-center justify-center gap-1.5 ${
+              mobileTab === "data"
+                ? "bg-[var(--accent-primary)] text-white shadow-xs"
+                : "text-[var(--text-secondary)] hover:text-white"
+            }`}
+          >
+            <span>Target JSON</span>
+          </button>
+          <button
+            onClick={() => setMobileTab("schema")}
+            className={`flex-1 py-1 text-xs font-semibold rounded-md transition-all flex items-center justify-center gap-1.5 ${
+              mobileTab === "schema"
+                ? "bg-[var(--accent-primary)] text-white shadow-xs"
+                : "text-[var(--text-secondary)] hover:text-white"
+            }`}
+          >
+            <span>Schema &amp; Violations</span>
+          </button>
+        </div>
+      </div>
+
       {/* Main Split Layout: JSON Data (Left) + JSON Schema (Right) */}
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
         {/* Left: JSON Data */}
-        <div className="w-full md:w-1/2 flex flex-col border-b md:border-b-0 md:border-r border-[var(--border-color)]">
+        <div
+          className={`w-full md:w-1/2 flex flex-col md:border-r border-[var(--border-color)] h-full ${
+            mobileTab === "data" ? "flex" : "hidden md:flex"
+          }`}
+        >
           <div className="p-2 border-b border-[var(--border-subtle)] bg-[var(--bg-secondary)] flex items-center justify-between text-xs font-semibold text-[var(--text-secondary)]">
             <span>Target JSON Payload</span>
             <span className="text-[10px] text-[var(--text-muted)] font-mono">Editable</span>
@@ -204,7 +235,11 @@ export const SchemaStudio: React.FC<SchemaStudioProps> = ({
         </div>
 
         {/* Right: JSON Schema & Violations List */}
-        <div className="w-full md:w-1/2 flex flex-col bg-[var(--bg-primary)]">
+        <div
+          className={`w-full md:w-1/2 flex flex-col bg-[var(--bg-primary)] h-full ${
+            mobileTab === "schema" ? "flex" : "hidden md:flex"
+          }`}
+        >
           <div className="p-2 border-b border-[var(--border-subtle)] bg-[var(--bg-secondary)] flex items-center justify-between text-xs font-semibold text-[var(--text-secondary)]">
             <span>JSON Schema Definition (Draft-07)</span>
             <span className="text-[10px] text-[var(--text-muted)] font-mono">Draft-07 / 2020-12</span>

@@ -28,6 +28,7 @@ export const RepairStudio: React.FC<RepairStudioProps> = ({
 }) => {
   const [inputText, setInputText] = useState(currentJsonText);
   const [copied, setCopied] = useState(false);
+  const [mobileTab, setMobileTab] = useState<"input" | "repaired">("repaired");
 
   // Attempt repair
   const repairResult = useMemo(() => {
@@ -139,10 +140,40 @@ export const RepairStudio: React.FC<RepairStudioProps> = ({
         </div>
       </div>
 
+      {/* Mobile Segmented Toggle */}
+      <div className="flex md:hidden items-center justify-center p-1.5 bg-[var(--bg-secondary)] border-b border-[var(--border-color)]">
+        <div className="flex items-center rounded-lg bg-[var(--bg-primary)] p-0.5 border border-[var(--border-color)] w-full max-w-xs">
+          <button
+            onClick={() => setMobileTab("input")}
+            className={`flex-1 py-1 text-xs font-semibold rounded-md transition-all flex items-center justify-center gap-1.5 ${
+              mobileTab === "input"
+                ? "bg-[var(--accent-primary)] text-white shadow-xs"
+                : "text-[var(--text-secondary)] hover:text-white"
+            }`}
+          >
+            <span>Raw Input</span>
+          </button>
+          <button
+            onClick={() => setMobileTab("repaired")}
+            className={`flex-1 py-1 text-xs font-semibold rounded-md transition-all flex items-center justify-center gap-1.5 ${
+              mobileTab === "repaired"
+                ? "bg-[var(--accent-primary)] text-white shadow-xs"
+                : "text-[var(--text-secondary)] hover:text-white"
+            }`}
+          >
+            <span>✨ Repaired JSON</span>
+          </button>
+        </div>
+      </div>
+
       {/* Main Split Layout: Broken Input vs Repaired Output */}
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
         {/* Left: Broken Input */}
-        <div className="w-full md:w-1/2 flex flex-col border-b md:border-b-0 md:border-r border-[var(--border-color)]">
+        <div
+          className={`w-full md:w-1/2 flex flex-col md:border-r border-[var(--border-color)] h-full ${
+            mobileTab === "input" ? "flex" : "hidden md:flex"
+          }`}
+        >
           <div className="p-2 border-b border-[var(--border-subtle)] bg-[var(--bg-secondary)] flex items-center justify-between text-xs font-semibold">
             <div className="flex items-center gap-1.5 text-red-400">
               <AlertTriangle size={13} />
@@ -174,7 +205,11 @@ export const RepairStudio: React.FC<RepairStudioProps> = ({
         </div>
 
         {/* Right: Repaired Output */}
-        <div className="w-full md:w-1/2 flex flex-col bg-[var(--bg-primary)]">
+        <div
+          className={`w-full md:w-1/2 flex flex-col bg-[var(--bg-primary)] h-full ${
+            mobileTab === "repaired" ? "flex" : "hidden md:flex"
+          }`}
+        >
           <div className="p-2 border-b border-[var(--border-subtle)] bg-[var(--bg-secondary)] flex items-center justify-between text-xs font-semibold">
             <div className="flex items-center gap-1.5 text-emerald-400">
               <CheckCircle2 size={13} />

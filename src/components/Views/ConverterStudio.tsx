@@ -325,12 +325,19 @@ export const ConverterStudio: React.FC<ConverterStudioProps> = ({
           />
         </div>
 
-        {/* Right Collapsible Sidebar: Settings & Controls (Open by default) */}
+        {/* Right Collapsible Sidebar: Settings & Controls (Responsive drawer on mobile) */}
         {isSidebarOpen && currentTargetConfig.category === "types" && (
-          <div
-            className="w-80 flex flex-col h-full border-l bg-[var(--bg-secondary)] overflow-hidden transition-all animate-fade-in flex-shrink-0"
-            style={{ borderColor: "var(--border-color)" }}
-          >
+          <>
+            {/* Mobile Backdrop */}
+            <div
+              className="md:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-xs animate-fade-in"
+              onClick={() => setIsSidebarOpen(false)}
+            />
+
+            <div
+              className="fixed inset-y-0 right-0 z-50 w-full max-w-xs md:relative md:w-80 md:inset-auto flex flex-col h-full border-l bg-[var(--bg-secondary)] shadow-2xl md:shadow-none overflow-hidden transition-all animate-slide-left md:animate-fade-in flex-shrink-0"
+              style={{ borderColor: "var(--border-color)" }}
+            >
             {/* Sidebar Header */}
             <div
               className="h-10 border-b text-xs font-semibold text-[var(--text-secondary)] flex items-center justify-between flex-shrink-0"
@@ -650,7 +657,8 @@ export const ConverterStudio: React.FC<ConverterStudioProps> = ({
               )}
             </div>
           </div>
-        )}
+        </>
+      )}
       </div>
     </div>
   );
