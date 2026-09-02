@@ -624,8 +624,8 @@ export function JsonStudioApp({
           </main>
         </div>
 
-        {/* Bottom Status Bar (with mobile padding offset for bottom nav) */}
-        <div className="pb-14 md:pb-0 flex-shrink-0">
+        {/* Bottom Status Bar */}
+        <div className="flex-shrink-0">
           <StatusBar
             isValid={parseResult.valid}
             errorMessage={parseResult.error?.message}

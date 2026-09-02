@@ -16,7 +16,6 @@ import {
   Columns,
   ClipboardPaste,
   Eraser,
-  SlidersHorizontal,
   Menu,
 } from "lucide-react";
 import { AppTheme } from "@/types";
@@ -67,7 +66,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [isThemeOpen, setIsThemeOpen] = useState(false);
   const [isPasteModalOpen, setIsPasteModalOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [pastedText, setPastedText] = useState("");
   const [pasteAsNewTab, setPasteAsNewTab] = useState(true);
   const [copied, setCopied] = useState(false);
@@ -321,16 +319,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </div>
 
-          {/* Mobile Actions Drawer Button (Visible on < md) */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Open Actions Menu"
-            title="More Actions"
-            className="md:hidden w-8 h-8 flex items-center justify-center rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)]"
-          >
-            <SlidersHorizontal size={16} />
-          </button>
-
           {/* Command Palette Button (Desktop >= md) */}
           <button
             onClick={onOpenCommandPalette}
@@ -345,75 +333,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
         </div>
       </div>
-
-      {/* Mobile Actions Modal / Bottom Sheet */}
-      {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 z-50 flex flex-col justify-end bg-black/60 backdrop-blur-xs md:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
-        >
-          <div
-            className="w-full rounded-t-2xl border-t bg-[var(--bg-secondary)] border-[var(--border-color)] p-4 shadow-2xl animate-slide-up"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between pb-3 border-b border-[var(--border-color)] mb-3">
-              <span className="font-bold text-sm text-[var(--text-primary)]">Quick Actions</span>
-              <button
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="p-1 rounded-full text-[var(--text-muted)] hover:text-white bg-[var(--bg-tertiary)]"
-              >
-                <X size={16} />
-              </button>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  onOpenFileUpload();
-                }}
-                className="flex items-center gap-2.5 p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-xs text-[var(--text-primary)] font-medium"
-              >
-                <FolderOpen size={16} className="text-blue-400" />
-                <span>Upload File</span>
-              </button>
-
-              <button
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  onOpenUrlImport();
-                }}
-                className="flex items-center gap-2.5 p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-xs text-[var(--text-primary)] font-medium"
-              >
-                <Globe size={16} className="text-cyan-400" />
-                <span>Fetch from URL</span>
-              </button>
-
-              <button
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  onClear();
-                }}
-                className="flex items-center gap-2.5 p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-xs text-[var(--text-primary)] font-medium"
-              >
-                <Eraser size={16} className="text-red-400" />
-                <span>Clear Editor</span>
-              </button>
-
-              <button
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  onOpenCommandPalette();
-                }}
-                className="flex items-center gap-2.5 p-3 rounded-xl bg-[var(--bg-primary)] border border-[var(--border-color)] text-xs text-[var(--text-primary)] font-medium"
-              >
-                <Command size={16} className="text-amber-400" />
-                <span>Search / Commands</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Paste Modal */}
       {isPasteModalOpen && (
