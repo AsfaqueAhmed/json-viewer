@@ -17,6 +17,7 @@ import {
   ClipboardPaste,
   Eraser,
   SlidersHorizontal,
+  Menu,
 } from "lucide-react";
 import { AppTheme } from "@/types";
 
@@ -34,6 +35,7 @@ interface NavbarProps {
   onDownload: () => void;
   isSplitView: boolean;
   onToggleSplitView: () => void;
+  onToggleMobileSidebar?: () => void;
 }
 
 // Dedicated divider between action items
@@ -61,6 +63,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onDownload,
   isSplitView,
   onToggleSplitView,
+  onToggleMobileSidebar,
 }) => {
   const [isThemeOpen, setIsThemeOpen] = useState(false);
   const [isPasteModalOpen, setIsPasteModalOpen] = useState(false);
@@ -131,8 +134,19 @@ export const Navbar: React.FC<NavbarProps> = ({
     >
       {/* Top Header Bar Container */}
       <div className="w-full h-12 flex items-center justify-between gap-2">
-        {/* App Title & Brand */}
-        <div className="flex items-center gap-2 flex-shrink-0">
+        {/* App Title & Brand + Mobile Sidebar Button */}
+        <div className="flex items-center gap-1.5 flex-shrink-0">
+          {onToggleMobileSidebar && (
+            <button
+              onClick={onToggleMobileSidebar}
+              aria-label="Open Navigation Sidebar"
+              title="Open Tools Sidebar"
+              className="md:hidden p-1.5 -ml-1 text-[var(--text-secondary)] hover:text-white rounded-md hover:bg-[var(--bg-hover)] transition-colors flex items-center justify-center cursor-pointer"
+            >
+              <Menu size={20} />
+            </button>
+          )}
+
           <div
             className="w-8 h-8 rounded-lg flex items-center justify-center font-mono font-bold text-white shadow-sm flex-shrink-0"
             style={{ backgroundColor: "var(--accent-primary)" }}

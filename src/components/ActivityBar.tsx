@@ -17,6 +17,7 @@ import {
   Terminal,
   BookOpen,
   X,
+  Braces,
 } from "lucide-react";
 import { ActiveView } from "@/types";
 
@@ -25,6 +26,8 @@ interface ActivityBarProps {
   onViewChange: (view: ActiveView) => void;
   onOpenShortcuts: () => void;
   hasErrors?: boolean;
+  isMobileSidebarOpen?: boolean;
+  onCloseMobileSidebar?: () => void;
 }
 
 export const ActivityBar: React.FC<ActivityBarProps> = ({
@@ -32,10 +35,13 @@ export const ActivityBar: React.FC<ActivityBarProps> = ({
   onViewChange,
   onOpenShortcuts,
   hasErrors,
+  isMobileSidebarOpen = false,
+  onCloseMobileSidebar,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobileMoreOpen, setIsMobileMoreOpen] = useState(false);
   const mobileMoreRef = useRef<HTMLDivElement>(null);
+  const mobileSidebarRef = useRef<HTMLDivElement>(null);
 
   // Close mobile more sheet on outside click
   useEffect(() => {
@@ -46,36 +52,42 @@ export const ActivityBar: React.FC<ActivityBarProps> = ({
       ) {
         setIsMobileMoreOpen(false);
       }
+      if (
+        mobileSidebarRef.current &&
+        !mobileSidebarRef.current.contains(event.target as Node)
+      ) {
+        onCloseMobileSidebar?.();
+      }
     }
-    if (isMobileMoreOpen) {
+    if (isMobileMoreOpen || isMobileSidebarOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isMobileMoreOpen]);
+  }, [isMobileMoreOpen, isMobileSidebarOpen, onCloseMobileSidebar]);
 
   const allNavItems: {
     id: ActiveView;
     label: string;
     shortLabel: string;
+    description: string;
     icon: React.ComponentType<{ className?: string; size?: number }>;
     shortcut: string;
     badge?: boolean;
     category: "primary" | "secondary";
   }[] = [
-    { id: "editor", label: "Monaco Code Editor", shortLabel: "Editor", icon: Code2, shortcut: "Alt+1", category: "primary" },
-    { id: "tree", label: "Tree Explorer", shortLabel: "Tree", icon: FolderTree, shortcut: "Alt+2", category: "primary" },
-    { id: "diff", label: "JSON Diff Comparer", shortLabel: "Diff", icon: GitCompare, shortcut: "Alt+4", category: "primary" },
-    { id: "converter", label: "Type Converter", shortLabel: "Convert", icon: ArrowLeftRight, shortcut: "Alt+6", category: "primary" },
-    { id: "schema", label: "Schema Validator", shortLabel: "Schema", icon: ShieldCheck, shortcut: "Alt+5", category: "secondary" },
-    { id: "repair", label: "Auto JSON Repair", shortLabel: "Repair", icon: Wrench, shortcut: "Alt+7", badge: hasErrors, category: "secondary" },
-    { id: "table", label: "Tabular Grid", shortLabel: "Table", icon: TableProperties, shortcut: "Alt+3", category: "secondary" },
-    { id: "graph", label: "Node Graph", shortLabel: "Graph", icon: Share2, shortcut: "Alt+8", category: "secondary" },
-    { id: "query", label: "JSONPath Studio", shortLabel: "Query", icon: Terminal, shortcut: "Alt+9", category: "secondary" },
+    { id: "editor", label: "Monaco Code Editor", shortLabel: "Editor", description: "JSON Editor & Formatter", icon: Code2, shortcut: "Alt+1", category: "primary" },
+    { id: "tree", label: "Tree & JSON Explorer", shortLabel: "Tree", description: "Collapsible Node Tree", icon: FolderTree, shortcut: "Alt+2", category: "primary" },
+    { id: "diff", label: "JSON Diff & Compare", shortLabel: "Diff", description: "Side-by-side Difference", icon: GitCompare, shortcut: "Alt+4", category: "primary" },
+    { id: "converter", label: "Type & Code Converter", shortLabel: "Convert", description: "TypeScript, YAML, CSV", icon: ArrowLeftRight, shortcut: "Alt+6", category: "primary" },
+    { id: "schema", label: "Schema Validator", shortLabel: "Schema", description: "Draft-07 AJV Validation", icon: ShieldCheck, shortcut: "Alt+5", category: "secondary" },
+    { id: "repair", label: "Auto JSON Repair", shortLabel: "Repair", description: "Fix Broken Syntax", icon: Wrench, shortcut: "Alt+7", badge: hasErrors, category: "secondary" },
+    { id: "table", label: "Tabular Grid View", shortLabel: "Table", description: "Spreadsheet Data Grid", icon: TableProperties, shortcut: "Alt+3", category: "secondary" },
+    { id: "graph", label: "Node Graph Visualizer", shortLabel: "Graph", description: "Interactive Visual Tree", icon: Share2, shortcut: "Alt+8", category: "secondary" },
+    { id: "query", label: "JSONPath Studio", shortLabel: "Query", description: "Query & Filter Evaluator", icon: Terminal, shortcut: "Alt+9", category: "secondary" },
   ];
 
   const primaryMobileItems = allNavItems.filter((i) => i.category === "primary");
   const secondaryMobileItems = allNavItems.filter((i) => i.category === "secondary");
-
   const isCurrentViewSecondary = secondaryMobileItems.some((i) => i.id === activeView);
 
   return (
@@ -103,7 +115,8 @@ export const ActivityBar: React.FC<ActivityBarProps> = ({
             <button
               onClick={() => setIsExpanded(!isExpanded)}
               title={isExpanded ? "Collapse Sidebar" : "Expand Sidebar"}
-              className={`w-full h-10 flex items-center rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-all ${
+              aria-label={isExpanded ? "Collapse Sidebar" : "Expand Sidebar"}
+              className={`w-full h-10 flex items-center rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-all cursor-pointer ${
                 isExpanded ? "justify-between text-xs font-semibold text-[var(--text-muted)]" : "justify-center"
               }`}
               style={{
@@ -135,7 +148,7 @@ export const ActivityBar: React.FC<ActivityBarProps> = ({
                 onClick={() => onViewChange(item.id)}
                 aria-label={`${item.label} (${item.shortcut})`}
                 title={`${item.label} (${item.shortcut})`}
-                className={`relative w-full h-10 flex items-center rounded-md transition-all duration-150 group ${
+                className={`relative w-full h-10 flex items-center rounded-md transition-all duration-150 group cursor-pointer ${
                   isExpanded ? "justify-start gap-2.5 text-xs" : "justify-center"
                 } ${
                   isActive
@@ -183,7 +196,7 @@ export const ActivityBar: React.FC<ActivityBarProps> = ({
             onClick={onOpenShortcuts}
             aria-label="Open Keyboard Shortcuts"
             title="Keyboard Shortcuts (Ctrl+/)"
-            className={`w-full h-10 flex items-center rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-all ${
+            className={`w-full h-10 flex items-center rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-all cursor-pointer ${
               isExpanded ? "justify-start gap-2.5 text-xs font-medium" : "justify-center"
             }`}
             style={{
@@ -197,7 +210,113 @@ export const ActivityBar: React.FC<ActivityBarProps> = ({
         </div>
       </aside>
 
-      {/* 2. MOBILE BOTTOM NAVIGATION BAR (< md screens) */}
+      {/* 2. MOBILE SLIDE-OUT LEFT SIDEBAR DRAWER (< md screens, opened via Navbar hamburger) */}
+      {isMobileSidebarOpen && (
+        <div className="md:hidden fixed inset-0 z-50 flex bg-black/60 backdrop-blur-xs animate-fade-in">
+          <div
+            ref={mobileSidebarRef}
+            className="w-72 max-w-[80vw] h-full flex flex-col justify-between bg-[var(--bg-secondary)] border-r border-[var(--border-color)] shadow-2xl p-4 animate-slide-right overflow-y-auto"
+          >
+            {/* Drawer Top Header */}
+            <div>
+              <div className="flex items-center justify-between pb-3.5 border-b border-[var(--border-color)] mb-3">
+                <div className="flex items-center gap-2">
+                  <div
+                    className="w-7 h-7 rounded-lg flex items-center justify-center font-mono font-bold text-white shadow-sm"
+                    style={{ backgroundColor: "var(--accent-primary)" }}
+                  >
+                    <Braces size={16} />
+                  </div>
+                  <span className="font-bold text-sm text-[var(--text-primary)]">
+                    JSON<span style={{ color: "var(--accent-primary)" }}>Studio</span>
+                  </span>
+                </div>
+                <button
+                  onClick={onCloseMobileSidebar}
+                  aria-label="Close Sidebar"
+                  className="p-1 rounded-full text-[var(--text-muted)] hover:text-white bg-[var(--bg-tertiary)]"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              {/* Navigation Links */}
+              <div className="space-y-1">
+                <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+                  Developer Tools
+                </div>
+                {allNavItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = activeView === item.id;
+
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => {
+                        onViewChange(item.id);
+                        onCloseMobileSidebar?.();
+                      }}
+                      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all ${
+                        isActive
+                          ? "bg-[var(--accent-primary)]/15 border border-[var(--accent-primary)]/40 text-[var(--text-primary)] font-semibold shadow-xs"
+                          : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]"
+                      }`}
+                    >
+                      <div
+                        className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                          isActive
+                            ? "bg-[var(--accent-primary)] text-white"
+                            : "bg-[var(--bg-primary)] text-[var(--text-primary)]"
+                        }`}
+                      >
+                        <Icon size={16} />
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-xs font-semibold text-[var(--text-primary)] truncate">
+                          {item.label}
+                        </span>
+                        <span className="text-[10px] text-[var(--text-muted)] truncate">
+                          {item.description}
+                        </span>
+                      </div>
+                      {item.badge && (
+                        <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse ml-auto" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Drawer Bottom Actions */}
+            <div className="pt-3 border-t border-[var(--border-color)] flex flex-col gap-2">
+              <button
+                onClick={() => {
+                  onCloseMobileSidebar?.();
+                  onOpenShortcuts();
+                }}
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)] text-xs text-[var(--text-secondary)] hover:text-white font-medium"
+              >
+                <Keyboard size={15} />
+                <span>Keyboard Shortcuts</span>
+              </button>
+              <button
+                onClick={() => {
+                  onCloseMobileSidebar?.();
+                  const el = document.getElementById("seo-guide-section");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)] text-xs text-[var(--text-secondary)] hover:text-white font-medium"
+              >
+                <BookOpen size={15} />
+                <span>Documentation &amp; FAQ</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 3. MOBILE BOTTOM NAVIGATION BAR (< md screens) */}
       <nav
         className="md:hidden fixed bottom-0 left-0 right-0 z-40 h-14 border-t select-none flex items-center justify-around px-1 bg-[var(--bg-activity)]/95 backdrop-blur-md"
         style={{ borderColor: "var(--border-color)" }}
@@ -256,7 +375,7 @@ export const ActivityBar: React.FC<ActivityBarProps> = ({
         </button>
       </nav>
 
-      {/* 3. MOBILE "MORE TOOLS" ACTION SHEET / DRAWER */}
+      {/* 4. MOBILE "MORE TOOLS" ACTION SHEET / BOTTOM DRAWER */}
       {isMobileMoreOpen && (
         <div className="md:hidden fixed inset-0 z-50 flex flex-col justify-end bg-black/60 backdrop-blur-xs animate-fade-in">
           <div

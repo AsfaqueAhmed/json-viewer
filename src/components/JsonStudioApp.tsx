@@ -75,6 +75,7 @@ export function JsonStudioApp({
   const [isUrlImportOpen, setIsUrlImportOpen] = useState(false);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
   const [mobileEditorTab, setMobileEditorTab] = useState<"code" | "tree">("code");
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   // Hidden File Input
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -517,16 +518,19 @@ export function JsonStudioApp({
           onDownload={handleDownload}
           isSplitView={isSplitView}
           onToggleSplitView={() => setIsSplitView((s) => !s)}
+          onToggleMobileSidebar={() => setIsMobileSidebarOpen((s) => !s)}
         />
 
         {/* Middle Layout: Activity Bar + Workspace Views */}
         <div className="flex-1 flex overflow-hidden">
-          {/* Left Vertical Activity Bar */}
+          {/* Left Vertical Activity Bar / Mobile Bottom Nav & Drawer */}
           <ActivityBar
             activeView={activeView}
             onViewChange={setActiveView}
             onOpenShortcuts={() => setIsShortcutsOpen(true)}
             hasErrors={!parseResult.valid}
+            isMobileSidebarOpen={isMobileSidebarOpen}
+            onCloseMobileSidebar={() => setIsMobileSidebarOpen(false)}
           />
 
           {/* Main Work Area */}
