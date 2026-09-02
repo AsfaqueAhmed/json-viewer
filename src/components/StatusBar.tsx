@@ -21,6 +21,8 @@ interface StatusBarProps {
   onChangeIndentation: (indent: number | string) => void;
   onAutoRepair: () => void;
   onJumpToError?: () => void;
+  isDocsOpen?: boolean;
+  onToggleDocs?: () => void;
 }
 
 export const StatusBar: React.FC<StatusBarProps> = ({
@@ -33,6 +35,8 @@ export const StatusBar: React.FC<StatusBarProps> = ({
   onChangeIndentation,
   onAutoRepair,
   onJumpToError,
+  isDocsOpen,
+  onToggleDocs,
 }) => {
   const [isIndentMenuOpen, setIsIndentMenuOpen] = useState(false);
   const indentMenuRef = useRef<HTMLDivElement>(null);
@@ -160,17 +164,18 @@ export const StatusBar: React.FC<StatusBarProps> = ({
 
         <span className="hidden sm:inline opacity-90">UTF-8</span>
 
-        {/* Guide & Docs */}
+        {/* Guide & Docs Toggle Button */}
         <button
-          onClick={() => {
-            const el = document.getElementById("seo-guide-section");
-            if (el) el.scrollIntoView({ behavior: "smooth" });
-          }}
-          className="flex items-center gap-1 opacity-90 hover:opacity-100 hover:bg-black/20 px-1.5 py-0.5 rounded transition-colors text-white cursor-pointer"
-          title="Open Developer Documentation & FAQ"
+          onClick={onToggleDocs}
+          className={`flex items-center gap-1.5 px-2 py-0.5 rounded transition-all text-white cursor-pointer ${
+            isDocsOpen
+              ? "bg-white/25 font-bold shadow-xs"
+              : "opacity-90 hover:opacity-100 hover:bg-black/20"
+          }`}
+          title={isDocsOpen ? "Close Developer Documentation & FAQ" : "Open Developer Documentation & FAQ"}
         >
           <BookOpen size={11} />
-          <span className="hidden sm:inline">Docs &amp; FAQ</span>
+          <span className="hidden sm:inline">{isDocsOpen ? "Close Docs" : "Docs & FAQ"}</span>
         </button>
 
         {/* Privacy badge */}

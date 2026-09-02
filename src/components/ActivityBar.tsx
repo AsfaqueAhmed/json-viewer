@@ -12,6 +12,7 @@ import {
   Keyboard,
   PanelLeftClose,
   PanelLeft,
+  BookOpen,
   X,
   Braces,
 } from "lucide-react";
@@ -24,6 +25,8 @@ interface ActivityBarProps {
   hasErrors?: boolean;
   isMobileSidebarOpen?: boolean;
   onCloseMobileSidebar?: () => void;
+  isDocsOpen?: boolean;
+  onToggleDocs?: () => void;
 }
 
 export const ActivityBar: React.FC<ActivityBarProps> = ({
@@ -33,6 +36,8 @@ export const ActivityBar: React.FC<ActivityBarProps> = ({
   hasErrors,
   isMobileSidebarOpen = false,
   onCloseMobileSidebar,
+  isDocsOpen,
+  onToggleDocs,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const mobileSidebarRef = useRef<HTMLDivElement>(null);
@@ -330,6 +335,23 @@ export const ActivityBar: React.FC<ActivityBarProps> = ({
               >
                 <Keyboard size={19} className="flex-shrink-0" />
                 <span className="truncate">Keyboard Shortcuts</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  onCloseMobileSidebar?.();
+                  if (onToggleDocs) {
+                    onToggleDocs();
+                  } else {
+                    const el = document.getElementById("seo-guide-section");
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+                className="w-full flex items-center rounded-xl text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-all cursor-pointer"
+                style={{ paddingLeft: "16px", paddingRight: "12px", paddingTop: "13px", paddingBottom: "13px", gap: "14px" }}
+              >
+                <BookOpen size={19} className="flex-shrink-0" />
+                <span className="truncate">{isDocsOpen ? "Close Documentation" : "Documentation & FAQ"}</span>
               </button>
             </div>
           </div>

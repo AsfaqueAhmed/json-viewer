@@ -74,8 +74,23 @@ export function JsonStudioApp({
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isUrlImportOpen, setIsUrlImportOpen] = useState(false);
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
-  const [mobileEditorTab, setMobileEditorTab] = useState<"code" | "tree">("code");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isDocsOpen, setIsDocsOpen] = useState(false);
+
+  const handleToggleDocs = () => {
+    setIsDocsOpen((prev) => {
+      const next = !prev;
+      if (next) {
+        setTimeout(() => {
+          const el = document.getElementById("seo-guide-section");
+          if (el) el.scrollIntoView({ behavior: "smooth" });
+        }, 50);
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      return next;
+    });
+  };
 
   // Hidden File Input
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -523,7 +538,7 @@ export function JsonStudioApp({
 
         {/* Middle Layout: Activity Bar + Workspace Views */}
         <div className="flex-1 flex overflow-hidden">
-          {/* Left Vertical Activity Bar / Mobile Bottom Nav & Drawer */}
+          {/* Left Vertical Activity Bar & Mobile Bottom Nav & Drawer */}
           <ActivityBar
             activeView={activeView}
             onViewChange={setActiveView}
@@ -531,6 +546,8 @@ export function JsonStudioApp({
             hasErrors={!parseResult.valid}
             isMobileSidebarOpen={isMobileSidebarOpen}
             onCloseMobileSidebar={() => setIsMobileSidebarOpen(false)}
+            isDocsOpen={isDocsOpen}
+            onToggleDocs={handleToggleDocs}
           />
 
           {/* Main Work Area */}
@@ -553,44 +570,12 @@ export function JsonStudioApp({
               />
             )}
 
-            {/* Mobile Segmented Toggle when in Split View */}
-            {isSplitView && (
-              <div className="flex md:hidden items-center justify-center p-1.5 bg-[var(--bg-secondary)] border-b border-[var(--border-color)]">
-                <div className="flex items-center rounded-lg bg-[var(--bg-primary)] p-0.5 border border-[var(--border-color)] w-full max-w-xs">
-                  <button
-                    onClick={() => setMobileEditorTab("code")}
-                    className={`flex-1 py-1 text-xs font-semibold rounded-md transition-all flex items-center justify-center gap-1.5 ${
-                      mobileEditorTab === "code"
-                        ? "bg-[var(--accent-primary)] text-white shadow-xs"
-                        : "text-[var(--text-secondary)] hover:text-white"
-                    }`}
-                  >
-                    <span>📝 Code Editor</span>
-                  </button>
-                  <button
-                    onClick={() => setMobileEditorTab("tree")}
-                    className={`flex-1 py-1 text-xs font-semibold rounded-md transition-all flex items-center justify-center gap-1.5 ${
-                      mobileEditorTab === "tree"
-                        ? "bg-[var(--accent-primary)] text-white shadow-xs"
-                        : "text-[var(--text-secondary)] hover:text-white"
-                    }`}
-                  >
-                    <span>🌳 Active View</span>
-                  </button>
-                </div>
-              </div>
-            )}
-
             {/* Active Workspaces / Split View Area */}
             <div className="flex-1 flex overflow-hidden">
               {isSplitView ? (
                 <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
                   {/* Left Split: Monaco Editor */}
-                  <div
-                    className={`w-full md:w-1/2 h-full md:border-r border-[var(--border-color)] overflow-hidden ${
-                      mobileEditorTab === "code" ? "block" : "hidden md:block"
-                    }`}
-                  >
+                  <div className="w-full md:w-1/2 h-1/2 md:h-full border-b md:border-b-0 md:border-r border-[var(--border-color)] overflow-hidden">
                     <EditorView
                       value={activeTab.content}
                       onChange={handleUpdateActiveContent}
@@ -607,11 +592,7 @@ export function JsonStudioApp({
                   </div>
 
                   {/* Right Split: Selected Mode View */}
-                  <div
-                    className={`w-full md:w-1/2 h-full overflow-hidden ${
-                      mobileEditorTab === "tree" ? "block" : "hidden md:block"
-                    }`}
-                  >
+                  <div className="w-full md:w-1/2 h-1/2 md:h-full overflow-hidden">
                     {renderPrimaryView()}
                   </div>
                 </div>
@@ -641,12 +622,18 @@ export function JsonStudioApp({
             }}
             onAutoRepair={handleAutoRepair}
             onJumpToError={() => setActiveView("editor")}
+            isDocsOpen={isDocsOpen}
+            onToggleDocs={handleToggleDocs}
           />
         </div>
       </div>
 
       {/* Semantic SEO & Developer Guide Documentation Hub */}
-      <SeoContentSection currentToolKey={currentToolKey} />
+      <SeoContentSection
+        currentToolKey={currentToolKey}
+        isExpanded={isDocsOpen}
+        onToggleExpanded={handleToggleDocs}
+      />
 
       {/* Modals & Dialogs */}
       <CommandPalette
