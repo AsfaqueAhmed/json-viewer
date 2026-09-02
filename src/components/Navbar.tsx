@@ -40,7 +40,7 @@ interface NavbarProps {
 // Dedicated divider between action items
 const ToolbarDivider = () => (
   <div
-    className="h-5 w-[1px] flex-shrink-0 self-center hidden sm:block"
+    className="h-5 w-[1px] flex-shrink-0 self-center"
     style={{
       backgroundColor: "var(--border-color)",
       opacity: 0.85,
@@ -131,94 +131,119 @@ export const Navbar: React.FC<NavbarProps> = ({
       }}
     >
       {/* Top Header Bar Container */}
-      <div className="w-full h-12 flex items-center justify-between gap-2">
-        {/* App Title & Brand + Mobile Sidebar Button */}
-        <div className="flex items-center gap-1.5 flex-shrink-0">
+      <div className="w-full h-12 flex items-center justify-between gap-4">
+        {/* App Title & Brand */}
+        <div className="flex items-center gap-2.5 flex-shrink-0">
           {onToggleMobileSidebar && (
             <button
               onClick={onToggleMobileSidebar}
               aria-label="Open Navigation Sidebar"
-              title="Open Tools Sidebar"
-              className="md:hidden p-1.5 -ml-1 text-[var(--text-secondary)] hover:text-white rounded-md hover:bg-[var(--bg-hover)] transition-colors flex items-center justify-center cursor-pointer"
+              title="Open Navigation"
+              className="md:hidden p-1.5 -ml-1 rounded-md text-[var(--text-secondary)] hover:text-white hover:bg-[var(--bg-hover)] transition-colors flex items-center justify-center cursor-pointer flex-shrink-0"
             >
-              <Menu size={20} />
+              <Menu size={18} />
             </button>
           )}
 
           <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center font-mono font-bold text-white shadow-sm flex-shrink-0"
+            className="w-8.5 h-8.5 rounded-lg flex items-center justify-center font-mono font-bold text-white shadow-sm flex-shrink-0"
             style={{ backgroundColor: "var(--accent-primary)" }}
           >
-            <Braces size={18} />
+            <Braces size={19} />
           </div>
-          <span className="font-bold tracking-tight text-sm text-[var(--text-primary)] inline">
+          <span className="font-bold tracking-tight text-sm text-[var(--text-primary)] hidden sm:inline">
             JSON<span style={{ color: "var(--accent-primary)" }}>Studio</span>
           </span>
         </div>
 
-        {/* Global Toolbar with dividers ONLY among action items */}
-        <div className="flex items-center overflow-x-auto no-scrollbar py-1 gap-1 flex-1 justify-center sm:justify-start max-w-full sm:max-w-none">
+        {/* Global Toolbar with dividers ONLY among action items, with 12px left and right margins */}
+        <div className="flex items-center overflow-x-auto no-scrollbar py-1">
           {/* 1. Paste JSON */}
           <button
             onClick={handleDirectPaste}
-            aria-label="Paste JSON from Clipboard"
             title="Paste JSON from Clipboard"
-            className="flex items-center gap-1.5 text-xs rounded-md hover:bg-[var(--bg-hover)] text-emerald-400 hover:text-emerald-300 transition-all font-medium flex-shrink-0 px-2.5 py-1.5"
+            className="flex items-center gap-2 text-xs rounded-md hover:bg-[var(--bg-hover)] text-emerald-400 hover:text-emerald-300 transition-all font-medium flex-shrink-0"
+            style={{
+              paddingLeft: "12px",
+              paddingRight: "12px",
+              paddingTop: "5px",
+              paddingBottom: "5px",
+            }}
           >
             <ClipboardPaste size={15} />
-            <span className="hidden sm:inline">Paste</span>
+            <span>Paste JSON</span>
           </button>
 
           <ToolbarDivider />
 
-          {/* 2. Format */}
-          <button
-            onClick={onFormat}
-            aria-label="Beautify and Format JSON"
-            title="Beautify / Format (Shift+Alt+F)"
-            className="flex items-center gap-1.5 text-xs rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] transition-all font-medium flex-shrink-0 px-2.5 py-1.5"
-          >
-            <Sparkles size={15} className="text-emerald-400" />
-            <span>Format</span>
-          </button>
-
-          <ToolbarDivider />
-
-          {/* 3. Auto-Repair */}
-          <button
-            onClick={onRepair}
-            aria-label="Auto-Repair Malformed JSON"
-            title="Auto Fix / Repair Broken JSON"
-            className="flex items-center gap-1.5 text-xs rounded-md hover:bg-[var(--bg-hover)] text-amber-400 hover:text-amber-300 transition-all font-medium flex-shrink-0 px-2.5 py-1.5"
-          >
-            <Wand2 size={15} />
-            <span className="hidden xs:inline sm:inline">Repair</span>
-          </button>
-
-          <ToolbarDivider />
-
-          {/* 4. Open File (Hidden on ultra-small screens, in mobile menu) */}
+          {/* 2. Open File */}
           <button
             onClick={onOpenFileUpload}
-            aria-label="Open JSON File from Disk"
             title="Open JSON File from Disk"
-            className="hidden md:flex items-center gap-1.5 text-xs rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] transition-all font-medium flex-shrink-0 px-2.5 py-1.5"
+            className="flex items-center gap-2 text-xs rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:text-[var(--text-primary)] transition-all font-medium flex-shrink-0"
+            style={{
+              paddingLeft: "12px",
+              paddingRight: "12px",
+              paddingTop: "5px",
+              paddingBottom: "5px",
+            }}
           >
             <FolderOpen size={15} />
-            <span>Open</span>
+            <span className="hidden md:inline">Open</span>
           </button>
 
           <ToolbarDivider />
 
-          {/* 5. Fetch URL (Hidden on small screens) */}
+          {/* 3. Fetch URL */}
           <button
             onClick={onOpenUrlImport}
-            aria-label="Fetch JSON from API or URL"
             title="Fetch JSON from API / URL"
-            className="hidden lg:flex items-center gap-1.5 text-xs rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] transition-all font-medium flex-shrink-0 px-2.5 py-1.5"
+            className="flex items-center gap-2 text-xs rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:text-[var(--text-primary)] transition-all font-medium flex-shrink-0"
+            style={{
+              paddingLeft: "12px",
+              paddingRight: "12px",
+              paddingTop: "5px",
+              paddingBottom: "5px",
+            }}
           >
             <Globe size={15} />
-            <span>Fetch URL</span>
+            <span className="hidden md:inline">Fetch URL</span>
+          </button>
+
+          <ToolbarDivider />
+
+          {/* 4. Format */}
+          <button
+            onClick={onFormat}
+            title="Beautify / Format (Shift+Alt+F)"
+            className="flex items-center gap-2 text-xs rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:text-[var(--text-primary)] transition-all font-medium flex-shrink-0"
+            style={{
+              paddingLeft: "12px",
+              paddingRight: "12px",
+              paddingTop: "5px",
+              paddingBottom: "5px",
+            }}
+          >
+            <Sparkles size={15} className="text-emerald-400" />
+            <span className="hidden sm:inline">Format</span>
+          </button>
+
+          <ToolbarDivider />
+
+          {/* 5. Auto-Repair */}
+          <button
+            onClick={onRepair}
+            title="Auto Fix / Repair Broken JSON"
+            className="flex items-center gap-2 text-xs rounded-md hover:bg-[var(--bg-hover)] text-amber-400 hover:text-amber-300 transition-all font-medium flex-shrink-0"
+            style={{
+              paddingLeft: "12px",
+              paddingRight: "12px",
+              paddingTop: "5px",
+              paddingBottom: "5px",
+            }}
+          >
+            <Wand2 size={15} />
+            <span className="hidden sm:inline">Auto-Repair</span>
           </button>
 
           <ToolbarDivider />
@@ -226,26 +251,36 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* 6. Clear */}
           <button
             onClick={onClear}
-            aria-label="Clear Document"
             title="Clear Document Content"
-            className="hidden sm:flex items-center gap-1.5 text-xs rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] transition-all font-medium flex-shrink-0 px-2.5 py-1.5"
+            className="flex items-center gap-2 text-xs rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:text-[var(--text-primary)] transition-all font-medium flex-shrink-0"
+            style={{
+              paddingLeft: "12px",
+              paddingRight: "12px",
+              paddingTop: "5px",
+              paddingBottom: "5px",
+            }}
           >
             <Eraser size={15} />
-            <span>Clear</span>
+            <span className="hidden sm:inline">Clear</span>
           </button>
 
           <ToolbarDivider />
 
-          {/* 7. Split View Toggle (Desktop only) */}
+          {/* 7. Split View Toggle */}
           <button
             onClick={onToggleSplitView}
-            aria-label={isSplitView ? "Switch to Single View" : "Toggle Split View"}
             title={isSplitView ? "Switch to Single View" : "Split View (Editor + Tree)"}
-            className={`hidden md:flex items-center gap-1.5 text-xs rounded-md transition-all flex-shrink-0 font-medium px-2.5 py-1.5 ${
+            className={`flex items-center gap-2 text-xs rounded-md transition-all flex-shrink-0 font-medium ${
               isSplitView
                 ? "bg-[var(--accent-primary)]/15 text-[var(--accent-primary)] font-semibold border border-[var(--accent-primary)]/40 shadow-xs"
-                : "hover:bg-[var(--bg-hover)] text-[var(--text-primary)]"
+                : "hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:text-[var(--text-primary)]"
             }`}
+            style={{
+              paddingLeft: "12px",
+              paddingRight: "12px",
+              paddingTop: "5px",
+              paddingBottom: "5px",
+            }}
           >
             <Columns size={15} className={isSplitView ? "text-[var(--accent-primary)]" : ""} />
             <span className="hidden lg:inline">Split</span>
@@ -253,13 +288,25 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Right Action Icons */}
-        <div className="flex items-center gap-1.5 flex-shrink-0">
+        <div className="flex items-center gap-3 flex-shrink-0 ml-4">
+          {/* Command Palette Button */}
+          <button
+            onClick={onOpenCommandPalette}
+            className="flex items-center gap-2.5 px-3 py-1.5 text-xs rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            title="Command Palette (Ctrl+K / Cmd+K)"
+          >
+            <Command size={14} />
+            <span className="hidden xl:inline">Search...</span>
+            <kbd className="text-[10px] px-1.5 py-0.5 rounded bg-[var(--bg-tertiary)] border border-[var(--border-color)]">
+              ⌘K
+            </kbd>
+          </button>
+
           {/* Copy Button */}
           <button
             onClick={handleCopy}
-            aria-label="Copy JSON Content"
             title="Copy Formatted JSON"
-            className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] transition-colors relative"
+            className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:text-[var(--text-primary)] transition-colors relative"
           >
             {copied ? <Check size={16} className="text-emerald-400" /> : <Copy size={16} />}
           </button>
@@ -267,9 +314,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Download File */}
           <button
             onClick={onDownload}
-            aria-label="Download JSON file"
             title="Download JSON File"
-            className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:text-[var(--text-primary)] transition-colors"
           >
             <Download size={16} />
           </button>
@@ -278,16 +324,15 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="relative" ref={themeDropdownRef}>
             <button
               onClick={() => setIsThemeOpen(!isThemeOpen)}
-              aria-label="Change Color Theme"
               title="Change Theme"
-              className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] transition-colors"
+              className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:text-[var(--text-primary)] transition-colors"
             >
               <Palette size={16} />
             </button>
 
             {isThemeOpen && (
               <div
-                className="absolute right-0 mt-2 w-48 rounded-lg shadow-2xl border py-2 z-50 animate-slide-down"
+                className="absolute right-0 mt-2 w-52 rounded-lg shadow-2xl border py-2 z-50 animate-slide-down"
                 style={{
                   backgroundColor: "var(--bg-secondary)",
                   borderColor: "var(--border-color)",
@@ -318,19 +363,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             )}
           </div>
-
-          {/* Command Palette Button (Desktop >= md) */}
-          <button
-            onClick={onOpenCommandPalette}
-            aria-label="Open Command Palette"
-            className="hidden md:flex items-center gap-2 px-2.5 py-1 text-xs rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
-            title="Command Palette (Ctrl+K / Cmd+K)"
-          >
-            <Command size={14} />
-            <kbd className="text-[10px] px-1.5 py-0.5 rounded bg-[var(--bg-tertiary)] border border-[var(--border-color)]">
-              ⌘K
-            </kbd>
-          </button>
         </div>
       </div>
 
@@ -341,27 +373,27 @@ export const Navbar: React.FC<NavbarProps> = ({
           onClick={() => setIsPasteModalOpen(false)}
         >
           <div
-            className="w-full max-w-lg rounded-xl shadow-2xl border overflow-hidden animate-slide-down bg-[var(--bg-secondary)] border-[var(--border-color)]"
+            className="w-full max-w-lg rounded-lg shadow-2xl border overflow-hidden animate-slide-down bg-[var(--bg-secondary)] border-[var(--border-color)]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between px-4 py-3.5 border-b border-[var(--border-color)]">
-              <div className="flex items-center gap-2.5">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--border-color)]">
+              <div className="flex items-center gap-3">
                 <ClipboardPaste size={18} className="text-emerald-400" />
                 <span className="font-semibold text-sm text-[var(--text-primary)]">Paste JSON Content</span>
               </div>
-              <button onClick={() => setIsPasteModalOpen(false)} className="text-[var(--text-muted)] hover:text-white p-1">
+              <button onClick={() => setIsPasteModalOpen(false)} className="text-[var(--text-muted)] hover:text-white">
                 <X size={16} />
               </button>
             </div>
 
-            <div className="p-4 flex flex-col gap-3 font-mono text-xs">
+            <div className="p-5 flex flex-col gap-4 font-mono text-xs">
               <textarea
                 value={pastedText}
                 onChange={(e) => setPastedText(e.target.value)}
                 placeholder="Paste your raw JSON text here..."
-                rows={8}
+                rows={10}
                 autoFocus
-                className="w-full p-3 rounded-lg bg-[var(--bg-input)] text-white border border-[var(--border-color)] focus:border-[var(--accent-primary)] outline-none resize-none font-mono text-xs"
+                className="w-full p-3 rounded bg-[var(--bg-input)] text-white border border-[var(--border-color)] focus:border-[var(--accent-primary)] outline-none resize-none font-mono text-xs"
               />
 
               <div className="flex items-center gap-2.5">
@@ -370,25 +402,25 @@ export const Navbar: React.FC<NavbarProps> = ({
                   id="pasteNewTab"
                   checked={pasteAsNewTab}
                   onChange={(e) => setPasteAsNewTab(e.target.checked)}
-                  className="rounded w-4 h-4"
+                  className="rounded"
                 />
                 <label htmlFor="pasteNewTab" className="text-xs text-[var(--text-primary)] cursor-pointer select-none">
-                  Open in a new document tab
+                  Open in a new tab
                 </label>
               </div>
             </div>
 
-            <div className="px-4 py-3 border-t flex items-center justify-end gap-2.5 bg-[var(--bg-primary)] border-[var(--border-color)]">
+            <div className="px-5 py-4 border-t flex items-center justify-end gap-3 bg-[var(--bg-primary)] border-[var(--border-color)]">
               <button
                 onClick={() => setIsPasteModalOpen(false)}
-                className="px-3.5 py-2 rounded-lg hover:bg-[var(--bg-hover)] text-xs text-[var(--text-secondary)] font-medium"
+                className="px-4 py-2 rounded hover:bg-[var(--bg-hover)] text-xs text-[var(--text-secondary)]"
               >
                 Cancel
               </button>
               <button
                 onClick={handleApplyPasteModal}
                 disabled={!pastedText.trim()}
-                className="px-4 py-2 rounded-lg bg-[var(--accent-primary)] text-white text-xs font-semibold hover:bg-[var(--accent-hover)] transition-colors disabled:opacity-50"
+                className="px-4 py-2 rounded bg-[var(--accent-primary)] text-white text-xs font-semibold hover:bg-[var(--accent-hover)] transition-colors disabled:opacity-50"
               >
                 Apply JSON
               </button>
