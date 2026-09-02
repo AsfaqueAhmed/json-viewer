@@ -13,6 +13,7 @@ import {
   PanelLeftClose,
   PanelLeft,
   BookOpen,
+  ChevronRight,
   X,
   Braces,
 } from "lucide-react";
@@ -347,11 +348,33 @@ export const ActivityBar: React.FC<ActivityBarProps> = ({
                     if (el) el.scrollIntoView({ behavior: "smooth" });
                   }
                 }}
-                className="w-full flex items-center rounded-xl text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-all cursor-pointer"
-                style={{ paddingLeft: "16px", paddingRight: "12px", paddingTop: "13px", paddingBottom: "13px", gap: "14px" }}
+                className="w-full flex items-center rounded-xl border transition-all cursor-pointer text-left"
+                style={{
+                  backgroundColor: "var(--bg-tertiary)",
+                  borderColor: "var(--border-color)",
+                  paddingLeft: "12px",
+                  paddingRight: "12px",
+                  paddingTop: "12px",
+                  paddingBottom: "12px",
+                  gap: "12px",
+                  marginTop: "2px",
+                }}
               >
-                <BookOpen size={19} className="flex-shrink-0" />
-                <span className="truncate">{isDocsOpen ? "Close Documentation" : "Documentation & FAQ"}</span>
+                <div
+                  className="rounded-lg flex items-center justify-center flex-shrink-0 text-white"
+                  style={{ width: "36px", height: "36px", backgroundColor: "var(--accent-primary)" }}
+                >
+                  <BookOpen size={17} />
+                </div>
+                <div className="flex flex-col min-w-0 flex-1">
+                  <span className="truncate text-sm font-semibold text-[var(--text-primary)]">
+                    {isDocsOpen ? "Close Documentation" : "Documentation & FAQ"}
+                  </span>
+                  <span className="truncate text-[11px] text-[var(--text-muted)]">
+                    Guides, tips &amp; answers
+                  </span>
+                </div>
+                <ChevronRight size={16} className="text-[var(--text-muted)] flex-shrink-0" />
               </button>
             </div>
           </div>

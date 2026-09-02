@@ -78,19 +78,37 @@ export function JsonStudioApp({
   const [isDocsOpen, setIsDocsOpen] = useState(false);
 
   const handleToggleDocs = () => {
-    setIsDocsOpen((prev) => {
-      const next = !prev;
-      if (next) {
-        setTimeout(() => {
-          const el = document.getElementById("seo-guide-section");
-          if (el) el.scrollIntoView({ behavior: "smooth" });
-        }, 50);
-      } else {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-      return next;
-    });
+    setIsDocsOpen((prev) => !prev);
   };
+
+  // The app shell is normally a fixed-viewport IDE (html/body overflow: hidden),
+  // but the docs & FAQ section lives below it in normal flow — allow page scroll
+  // only while it's open, so that content is actually reachable. Scrolling back
+  // to top happens here (not inside the setState updater) and uses "auto" (not
+  // "smooth") so it completes before overflow is re-locked on the same tick.
+  useEffect(() => {
+    if (isDocsOpen) {
+      document.documentElement.style.overflowY = "auto";
+      document.body.style.overflowY = "auto";
+      const timer = setTimeout(() => {
+        const el = document.getElementById("seo-guide-section");
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+
+    // Scroll the element that's actually scrollable here. Because `html, body`
+    // are both explicitly `height: 100%`, `body` — not `documentElement` — ends
+    // up being the real scroll container, so `window.scrollTo` is a no-op.
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    document.documentElement.style.overflowY = "hidden";
+    document.body.style.overflowY = "hidden";
+    return () => {
+      document.documentElement.style.overflowY = "hidden";
+      document.body.style.overflowY = "hidden";
+    };
+  }, [isDocsOpen]);
 
   // Hidden File Input
   const fileInputRef = useRef<HTMLInputElement>(null);
