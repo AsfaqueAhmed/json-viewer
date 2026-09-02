@@ -1,1 +1,378 @@
 @import "tailwindcss";
+
+/* ==========================================================================
+   JSON STUDIO DESIGN SYSTEM - VS CODE MODERN THEMES
+   ========================================================================== */
+
+:root,
+[data-theme="vscode-dark"] {
+  --bg-primary: #1e1e1e;
+  --bg-secondary: #252526;
+  --bg-tertiary: #2d2d2d;
+  --bg-elevated: #333333;
+  --bg-activity: #181818;
+  --bg-statusbar: #007acc;
+  --bg-statusbar-hover: #1b89d4;
+  --bg-input: #3c3c3c;
+  --bg-tab-active: #1e1e1e;
+  --bg-tab-inactive: #2d2d2d;
+  --bg-hover: rgba(255, 255, 255, 0.08);
+  --bg-active: rgba(255, 255, 255, 0.14);
+  --bg-card: #252526;
+
+  --border-color: #3c3c3c;
+  --border-subtle: #2d2d2d;
+  --border-focus: #007acc;
+
+  --text-primary: #cccccc;
+  --text-secondary: #969696;
+  --text-muted: #6e6e6e;
+  --text-inverse: #ffffff;
+
+  --accent-primary: #007acc;
+  --accent-hover: #0e8ad8;
+  --accent-secondary: #0098ff;
+  --accent-badge: #4d4d4d;
+
+  /* JSON Syntax Highlighting Tokens (VS Code Dark+) */
+  --json-key: #9cdcfe;
+  --json-string: #ce9178;
+  --json-number: #b5cea8;
+  --json-boolean: #569cd6;
+  --json-null: #569cd6;
+  --json-bracket: #ffd700;
+  --json-colon: #808080;
+  --json-comment: #6a9955;
+
+  /* Diff colors */
+  --diff-added-bg: rgba(46, 160, 67, 0.18);
+  --diff-added-border: #2ea043;
+  --diff-added-text: #7ee787;
+  --diff-removed-bg: rgba(248, 81, 73, 0.18);
+  --diff-removed-border: #f85149;
+  --diff-removed-text: #ff7b72;
+  --diff-modified-bg: rgba(210, 153, 34, 0.18);
+  --diff-modified-border: #d29922;
+  --diff-modified-text: #e3b341;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.6);
+
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+[data-theme="tokyo-night"] {
+  --bg-primary: #1a1b26;
+  --bg-secondary: #24283b;
+  --bg-tertiary: #2f354f;
+  --bg-elevated: #414868;
+  --bg-activity: #16161e;
+  --bg-statusbar: #7aa2f7;
+  --bg-statusbar-hover: #89b4fa;
+  --bg-input: #292e42;
+  --bg-tab-active: #1a1b26;
+  --bg-tab-inactive: #24283b;
+  --bg-hover: rgba(122, 162, 247, 0.12);
+  --bg-active: rgba(122, 162, 247, 0.2);
+  --bg-card: #24283b;
+
+  --border-color: #414868;
+  --border-subtle: #2f354f;
+  --border-focus: #7aa2f7;
+
+  --text-primary: #c0caf5;
+  --text-secondary: #9aa5ce;
+  --text-muted: #565f89;
+  --text-inverse: #15161e;
+
+  --accent-primary: #7aa2f7;
+  --accent-hover: #89b4fa;
+  --accent-secondary: #bb9af7;
+  --accent-badge: #3b4261;
+
+  --json-key: #7dcfff;
+  --json-string: #9ece6a;
+  --json-number: #ff9e64;
+  --json-boolean: #bb9af7;
+  --json-null: #f7768e;
+  --json-bracket: #e0af68;
+  --json-colon: #565f89;
+  --json-comment: #565f89;
+
+  --diff-added-bg: rgba(158, 206, 106, 0.18);
+  --diff-added-border: #9ece6a;
+  --diff-added-text: #9ece6a;
+  --diff-removed-bg: rgba(247, 118, 142, 0.18);
+  --diff-removed-border: #f7768e;
+  --diff-removed-text: #f7768e;
+  --diff-modified-bg: rgba(224, 175, 104, 0.18);
+  --diff-modified-border: #e0af68;
+  --diff-modified-text: #e0af68;
+}
+
+[data-theme="monokai"] {
+  --bg-primary: #272822;
+  --bg-secondary: #1e1f1c;
+  --bg-tertiary: #383830;
+  --bg-elevated: #49483e;
+  --bg-activity: #141412;
+  --bg-statusbar: #a6e22e;
+  --bg-statusbar-hover: #b8f244;
+  --bg-input: #383830;
+  --bg-tab-active: #272822;
+  --bg-tab-inactive: #1e1f1c;
+  --bg-hover: rgba(255, 255, 255, 0.08);
+  --bg-active: rgba(255, 255, 255, 0.15);
+  --bg-card: #1e1f1c;
+
+  --border-color: #49483e;
+  --border-subtle: #383830;
+  --border-focus: #a6e22e;
+
+  --text-primary: #f8f8f2;
+  --text-secondary: #cfcfc2;
+  --text-muted: #75715e;
+  --text-inverse: #1e1f1c;
+
+  --accent-primary: #a6e22e;
+  --accent-hover: #b8f244;
+  --accent-secondary: #66d9ef;
+  --accent-badge: #49483e;
+
+  --json-key: #66d9ef;
+  --json-string: #e6db74;
+  --json-number: #ae81ff;
+  --json-boolean: #fd971f;
+  --json-null: #f92672;
+  --json-bracket: #f8f8f2;
+  --json-colon: #75715e;
+  --json-comment: #75715e;
+
+  --diff-added-bg: rgba(166, 226, 46, 0.18);
+  --diff-added-border: #a6e22e;
+  --diff-added-text: #a6e22e;
+  --diff-removed-bg: rgba(249, 38, 114, 0.18);
+  --diff-removed-border: #f92672;
+  --diff-removed-text: #f92672;
+  --diff-modified-bg: rgba(253, 151, 31, 0.18);
+  --diff-modified-border: #fd971f;
+  --diff-modified-text: #fd971f;
+}
+
+[data-theme="vscode-light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f8f8;
+  --bg-tertiary: #f0f0f0;
+  --bg-elevated: #ffffff;
+  --bg-activity: #f3f3f3;
+  --bg-statusbar: #007acc;
+  --bg-statusbar-hover: #1b89d4;
+  --bg-input: #ffffff;
+  --bg-tab-active: #ffffff;
+  --bg-tab-inactive: #ececec;
+  --bg-hover: rgba(0, 0, 0, 0.05);
+  --bg-active: rgba(0, 0, 0, 0.1);
+  --bg-card: #ffffff;
+
+  --border-color: #d4d4d4;
+  --border-subtle: #e8e8e8;
+  --border-focus: #007acc;
+
+  --text-primary: #1e1e1e;
+  --text-secondary: #616161;
+  --text-muted: #888888;
+  --text-inverse: #ffffff;
+
+  --accent-primary: #007acc;
+  --accent-hover: #0062a3;
+  --accent-secondary: #005fb8;
+  --accent-badge: #e0e0e0;
+
+  --json-key: #0451a5;
+  --json-string: #a31515;
+  --json-number: #098658;
+  --json-boolean: #0000ff;
+  --json-null: #0000ff;
+  --json-bracket: #1e1e1e;
+  --json-colon: #666666;
+  --json-comment: #008000;
+
+  --badge-object-color: #795e26;
+  --badge-object-bg: rgba(121, 94, 38, 0.1);
+  --badge-object-border: rgba(121, 94, 38, 0.25);
+
+  --badge-array-color: #008080;
+  --badge-array-bg: rgba(0, 128, 128, 0.1);
+  --badge-array-border: rgba(0, 128, 128, 0.25);
+
+  --diff-added-bg: rgba(46, 160, 67, 0.15);
+  --diff-added-border: #2ea043;
+  --diff-added-text: #1a7f37;
+  --diff-removed-bg: rgba(248, 81, 73, 0.15);
+  --diff-removed-border: #cf222e;
+  --diff-removed-text: #cf222e;
+  --diff-modified-bg: rgba(210, 153, 34, 0.15);
+  --diff-modified-border: #9a6700;
+  --diff-modified-text: #9a6700;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* ==========================================================================
+   BASE & RESET
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+}
+
+code, pre, kbd, samp, .font-mono {
+  font-family: var(--font-mono);
+}
+
+/* ==========================================================================
+   CUSTOM VS CODE SCROLLBARS
+   ========================================================================== */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(121, 121, 121, 0.4);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(121, 121, 121, 0.7);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(121, 121, 121, 0.4) transparent;
+}
+
+/* ==========================================================================
+   ANIMATIONS & UI UTILITIES
+   ========================================================================== */
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-slide-down {
+  animation: slideDown 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.15s ease-out;
+}
+
+/* Glassmorphic & Badge helpers */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 4px;
+  line-height: 1.2;
+}
+
+.badge-string {
+  color: var(--json-string);
+  background: rgba(206, 145, 120, 0.12);
+  border: 1px solid rgba(206, 145, 120, 0.25);
+}
+
+.badge-number {
+  color: var(--json-number);
+  background: rgba(181, 206, 168, 0.12);
+  border: 1px solid rgba(181, 206, 168, 0.25);
+}
+
+.badge-boolean {
+  color: var(--json-boolean);
+  background: rgba(86, 156, 214, 0.12);
+  border: 1px solid rgba(86, 156, 214, 0.25);
+}
+
+.badge-object {
+  color: var(--badge-object-color, #dcdcaa);
+  background: var(--badge-object-bg, rgba(220, 220, 170, 0.12));
+  border: 1px solid var(--badge-object-border, rgba(220, 220, 170, 0.25));
+}
+
+.badge-array {
+  color: var(--badge-array-color, #4ec9b0);
+  background: var(--badge-array-bg, rgba(78, 201, 176, 0.12));
+  border: 1px solid var(--badge-array-border, rgba(78, 201, 176, 0.25));
+}
+
+/* Contextual menu styling */
+.glass-menu {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+  border-radius: 6px;
+  backdrop-filter: blur(12px);
+}
+
+/* Monaco in-editor search highlights */
+.monaco-search-match {
+  background-color: rgba(234, 179, 8, 0.28) !important;
+  border-bottom: 1px solid rgba(234, 179, 8, 0.8) !important;
+  border-radius: 2px;
+}
+
+.monaco-search-current-match {
+  background-color: rgba(249, 115, 22, 0.55) !important;
+  outline: 1px solid rgba(249, 115, 22, 0.9) !important;
+  border-radius: 2px;
+}
