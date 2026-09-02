@@ -1,0 +1,7 @@
+services:
+  json-viewer:
+    build: .
+    container_name: json-viewer
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3004:3000"

@@ -137,7 +137,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Braces size={19} />
           </div>
-          <span className="font-bold tracking-tight text-sm text-[var(--text-primary)] hidden sm:inline">
+          <span className="font-bold tracking-tight text-sm text-[var(--text-primary)] inline">
             JSON<span style={{ color: "var(--accent-primary)" }}>Studio</span>
           </span>
         </div>
@@ -147,6 +147,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* 1. Paste JSON */}
           <button
             onClick={handleDirectPaste}
+            aria-label="Paste JSON from Clipboard"
             title="Paste JSON from Clipboard"
             className="flex items-center gap-2 text-xs rounded-md hover:bg-[var(--bg-hover)] text-emerald-400 hover:text-emerald-300 transition-all font-medium flex-shrink-0"
             style={{
@@ -165,6 +166,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* 2. Open File */}
           <button
             onClick={onOpenFileUpload}
+            aria-label="Open JSON File from Disk"
             title="Open JSON File from Disk"
             className="flex items-center gap-2 text-xs rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:text-[var(--text-primary)] transition-all font-medium flex-shrink-0"
             style={{
@@ -183,6 +185,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* 3. Fetch URL */}
           <button
             onClick={onOpenUrlImport}
+            aria-label="Fetch JSON from API or URL"
             title="Fetch JSON from API / URL"
             className="flex items-center gap-2 text-xs rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:text-[var(--text-primary)] transition-all font-medium flex-shrink-0"
             style={{
@@ -201,6 +204,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* 4. Format */}
           <button
             onClick={onFormat}
+            aria-label="Beautify and Format JSON"
             title="Beautify / Format (Shift+Alt+F)"
             className="flex items-center gap-2 text-xs rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:text-[var(--text-primary)] transition-all font-medium flex-shrink-0"
             style={{
@@ -219,6 +223,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* 5. Auto-Repair */}
           <button
             onClick={onRepair}
+            aria-label="Auto-Repair Malformed JSON"
             title="Auto Fix / Repair Broken JSON"
             className="flex items-center gap-2 text-xs rounded-md hover:bg-[var(--bg-hover)] text-amber-400 hover:text-amber-300 transition-all font-medium flex-shrink-0"
             style={{
@@ -237,6 +242,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* 6. Clear */}
           <button
             onClick={onClear}
+            aria-label="Clear Document"
             title="Clear Document Content"
             className="flex items-center gap-2 text-xs rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:text-[var(--text-primary)] transition-all font-medium flex-shrink-0"
             style={{
@@ -255,6 +261,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* 7. Split View Toggle */}
           <button
             onClick={onToggleSplitView}
+            aria-label={isSplitView ? "Switch to Single View" : "Toggle Split View"}
             title={isSplitView ? "Switch to Single View" : "Split View (Editor + Tree)"}
             className={`flex items-center gap-2 text-xs rounded-md transition-all flex-shrink-0 font-medium ${
               isSplitView
@@ -278,6 +285,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Command Palette Button */}
           <button
             onClick={onOpenCommandPalette}
+            aria-label="Open Command Palette"
             className="flex items-center gap-2.5 px-3 py-1.5 text-xs rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
             title="Command Palette (Ctrl+K / Cmd+K)"
           >
@@ -291,6 +299,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Copy Button */}
           <button
             onClick={handleCopy}
+            aria-label="Copy JSON Content"
             title="Copy Formatted JSON"
             className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:text-[var(--text-primary)] transition-colors relative"
           >
@@ -300,6 +309,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Download File */}
           <button
             onClick={onDownload}
+            aria-label="Download JSON file"
             title="Download JSON File"
             className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:text-[var(--text-primary)] transition-colors"
           >
@@ -310,6 +320,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="relative" ref={themeDropdownRef}>
             <button
               onClick={() => setIsThemeOpen(!isThemeOpen)}
+              aria-label="Change Color Theme"
               title="Change Theme"
               className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:text-[var(--text-primary)] transition-colors"
             >

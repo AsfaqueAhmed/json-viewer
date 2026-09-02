@@ -7,6 +7,7 @@ import {
   Wand2,
   Lock,
   ChevronDown,
+  BookOpen,
 } from "lucide-react";
 import { JsonStats } from "@/lib/json-parser";
 
@@ -158,6 +159,19 @@ export const StatusBar: React.FC<StatusBarProps> = ({
         </div>
 
         <span className="hidden sm:inline opacity-90">UTF-8</span>
+
+        {/* Guide & Docs */}
+        <button
+          onClick={() => {
+            const el = document.getElementById("seo-guide-section");
+            if (el) el.scrollIntoView({ behavior: "smooth" });
+          }}
+          className="flex items-center gap-1 opacity-90 hover:opacity-100 hover:bg-black/20 px-1.5 py-0.5 rounded transition-colors text-white cursor-pointer"
+          title="Open Developer Documentation & FAQ"
+        >
+          <BookOpen size={11} />
+          <span className="hidden sm:inline">Docs &amp; FAQ</span>
+        </button>
 
         {/* Privacy badge */}
         <div

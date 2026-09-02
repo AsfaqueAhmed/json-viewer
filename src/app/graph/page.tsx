@@ -7,19 +7,19 @@ import {
   getBreadcrumbSchema,
 } from "@/lib/seo-schemas";
 
-const config = TOOLS_CONFIG.editor;
+const config = TOOLS_CONFIG.graph;
 
 export const metadata: Metadata = {
   title: config.title,
   description: config.description,
   keywords: config.keywords,
   alternates: {
-    canonical: "/",
+    canonical: "/graph",
   },
   openGraph: {
     title: config.title,
     description: config.description,
-    url: "https://jsonstudio-app.web.app",
+    url: "https://jsonstudio-app.web.app/graph",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: config.headline }],
   },
   twitter: {
@@ -29,17 +29,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+export default function GraphPage() {
   const softwareSchema = getSoftwareAppSchema(config);
   const faqSchema = getFaqSchema(config.faqs);
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: "Home", path: "/" },
-    { name: config.name, path: "/" },
+    { name: config.name, path: config.path },
   ]);
 
   return (
     <>
-      {/* Search Engine Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }}
@@ -53,7 +52,7 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <JsonStudioApp initialView="editor" currentToolKey="editor" />
+      <JsonStudioApp initialView="graph" currentToolKey="graph" />
     </>
   );
 }

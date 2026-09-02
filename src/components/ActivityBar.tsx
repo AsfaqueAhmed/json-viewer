@@ -99,6 +99,7 @@ export const ActivityBar: React.FC<ActivityBarProps> = ({
             <button
               key={item.id}
               onClick={() => onViewChange(item.id)}
+              aria-label={`${item.label} (${item.shortcut})`}
               title={`${item.label} (${item.shortcut})`}
               className={`relative w-full h-10 flex items-center rounded-md transition-all duration-150 group ${
                 isExpanded ? "justify-start gap-2.5 text-xs" : "justify-center"
@@ -146,6 +147,7 @@ export const ActivityBar: React.FC<ActivityBarProps> = ({
       >
         <button
           onClick={onOpenShortcuts}
+          aria-label="Open Keyboard Shortcuts"
           title="Keyboard Shortcuts (Ctrl+/)"
           className={`w-full h-10 flex items-center rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-all ${
             isExpanded ? "justify-start gap-2.5 text-xs font-medium" : "justify-center"
